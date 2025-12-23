@@ -2,83 +2,91 @@
 
 #Shebang statement
 
+#Using the environment variables to make the script efficient and reusable
+#Update the environment variable as per your use-case
+LOG_DIRECTORY="/mnt/c/Users/MASROOR/Desktop/logs_ingestion"
+APP_LOG="application.log"
+SYS_LOG="system.log"
+LOG_FILES=$(find $LOG_DIRECTORY -name "*.log" -mtime -1)
+ERROR_PATTERNS=("WARNING" "EXCEMPTION" "ERROR" "CRITICAL" "FATAL")
+
 echo -e "\n***********************Starting Logs Analysis***********************"
 
 #Determine the files that were updated in the last 24 hours 
 echo -e "\nBelow files were updated in the last 24 hours"
 echo -e "\n"
-find /mnt/c/Users/MASROOR/Desktop/logs_ingestion -name "*.log" -mtime -1 #Using the absolute path of the file to ensure the execution irrespective of the script file location
+echo "$LOG_FILES"
 
 echo -e "\n=====================Analysing Application.log file====================="
 echo -e "\n"
 
-grep "WARNING" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/application.log
+grep ${ERROR_PATTERNS[0]} $LOG_DIRECTORY/$APP_LOG
 
-echo -e "\nNumber of logs of WARNING type is: " $(grep -c "WARNING" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/application.log) #Command Substituion
-
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
-
-grep "EXCEPTION" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/application.log
-
-echo -e "\nNumber of logs of EXCEPTION type is: " $(grep -c "EXCEPTION" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/application.log) #Command Substituion
+echo -e "\nNumber of logs of ${ERROR_PATTERNS[0]} type is: " $(grep -c ${ERROR_PATTERNS[0]} $LOG_DIRECTORY/$APP_LOG) #Command Substituion
 
 echo -e "\n---------------------------------------------------------------"
 echo -e "\n"
 
-grep "ERROR" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/application.log
+grep ${ERROR_PATTERNS[1]} $LOG_DIRECTORY/$APP_LOG
 
-echo -e "\nNumber of logs of ERROR type is: " $(grep -c "ERROR" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/application.log) #Command Substituion
-
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
-
-grep "CRITICAL" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/application.log
-
-echo -e "\nNumber of logs of CRITICAL type is: " $(grep -c "CRITICAL" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/application.log) #Command Substituion
+echo -e "\nNumber of logs of ${ERROR_PATTERNS[1]} type is: " $(grep -c ${ERROR_PATTERNS[1]} $LOG_DIRECTORY/$APP_LOG) #Command Substituion
 
 echo -e "\n---------------------------------------------------------------"
 echo -e "\n"
 
-grep "FATAL" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/application.log
+grep ${ERROR_PATTERNS[2]} $LOG_DIRECTORY/$APP_LOG
 
-echo -e "\nNumber of logs of FATAL type is: " $(grep -c "FATAL" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/application.log) #Command Substituion
+echo -e "\nNumber of logs of ${ERROR_PATTERNS[2]} type is: " $(grep -c ${ERROR_PATTERNS[2]} $LOG_DIRECTORY/$APP_LOG) #Command Substituion
+
+echo -e "\n---------------------------------------------------------------"
+echo -e "\n"
+
+grep ${ERROR_PATTERNS[3]} $LOG_DIRECTORY/$APP_LOG
+
+echo -e "\nNumber of logs of ${ERROR_PATTERNS[3]} type is: " $(grep -c ${ERROR_PATTERNS[3]} $LOG_DIRECTORY/$APP_LOG) #Command Substituion
+
+echo -e "\n---------------------------------------------------------------"
+echo -e "\n"
+
+grep ${ERROR_PATTERNS[4]} $LOG_DIRECTORY/$APP_LOG
+
+echo -e "\nNumber of logs of ${ERROR_PATTERNS[4]} type is: " $(grep -c ${ERROR_PATTERNS[4]} $LOG_DIRECTORY/$APP_LOG) #Command Substituion
 
 echo -e "\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
 
 echo -e "\n=====================Analysing System.log file====================="
 echo -e "\n"
 
-grep "WARNING" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/system.log
+grep ${ERROR_PATTERNS[0]} $LOG_DIRECTORY/$SYS_LOG
 
-echo -e "\nNumber of logs of WARNING type is: " $(grep -c "WARNING" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/system.log) #Command Substituion
-
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
-
-grep "EXCEPTION" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/system.log
-
-echo -e "\nNumber of logs of EXCEPTION type is: " $(grep -c "EXCEPTION" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/system.log) #Command Substituion
+echo -e "\nNumber of logs of ${ERROR_PATTERNS[0]} type is: " $(grep -c ${ERROR_PATTERNS[0]} $LOG_DIRECTORY/$SYS_LOG) #Command Substituion
 
 echo -e "\n---------------------------------------------------------------"
 echo -e "\n"
 
-grep "ERROR" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/system.log
+grep ${ERROR_PATTERNS[1]} $LOG_DIRECTORY/$SYS_LOG
 
-echo -e "\nNumber of logs of ERROR type is: " $(grep -c "ERROR" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/system.log) #Command Substituion
-
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
-
-grep "CRITICAL" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/system.log
-
-echo -e "\nNumber of logs of CRITICAL type is: " $(grep -c "CRITICAL" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/system.log) #Command Substituion
+echo -e "\nNumber of logs of ${ERROR_PATTERNS[1]} type is: " $(grep -c ${ERROR_PATTERNS[1]} $LOG_DIRECTORY/$SYS_LOG) #Command Substituion
 
 echo -e "\n---------------------------------------------------------------"
 echo -e "\n"
 
-grep "FATAL" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/system.log
+grep ${ERROR_PATTERNS[2]} $LOG_DIRECTORY/$SYS_LOG
 
-echo -e "\nNumber of logs of FATAL type is: " $(grep -c "FATAL" /mnt/c/Users/MASROOR/Desktop/logs_ingestion/system.log) #Command Substituion
+echo -e "\nNumber of logs of ${ERROR_PATTERNS[2]} type is: " $(grep -c ${ERROR_PATTERNS[2]} $LOG_DIRECTORY/$SYS_LOG) #Command Substituion
+
+echo -e "\n---------------------------------------------------------------"
+echo -e "\n"
+
+grep ${ERROR_PATTERNS[3]} $LOG_DIRECTORY/$SYS_LOG
+
+echo -e "\nNumber of logs of ${ERROR_PATTERNS[3]} type is: " $(grep -c ${ERROR_PATTERNS[3]} $LOG_DIRECTORY/$SYS_LOG) #Command Substituion
+
+echo -e "\n---------------------------------------------------------------"
+echo -e "\n"
+
+grep ${ERROR_PATTERNS[4]} $LOG_DIRECTORY/$SYS_LOG
+
+echo -e "\nNumber of logs of ${ERROR_PATTERNS[4]} type is: " $(grep -c ${ERROR_PATTERNS[4]} $LOG_DIRECTORY/$SYS_LOG) #Command Substituion
 
 echo -e "\nANALYSIS COMPLETED!"
