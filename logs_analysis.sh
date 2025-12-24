@@ -1,92 +1,45 @@
 #!/bin/bash
 
-#Shebang statement
-
 #Using the environment variables to make the script efficient and reusable
 #Update the environment variable as per your use-case
 LOG_DIRECTORY="/mnt/c/Users/MASROOR/Desktop/logs_ingestion"
-APP_LOG="application.log"
-SYS_LOG="system.log"
 LOG_FILES=$(find $LOG_DIRECTORY -name "*.log" -mtime -1)
-ERROR_PATTERNS=("WARNING" "EXCEMPTION" "ERROR" "CRITICAL" "FATAL")
-
-echo -e "\n***********************Starting Logs Analysis***********************"
+ERROR_PATTERNS=("WARNING" "EXCEPTION" "ERROR" "CRITICAL" "FATAL")
 
 #Determine the files that were updated in the last 24 hours 
-echo -e "\nBelow files were updated in the last 24 hours"
-echo -e "\n"
-echo "$LOG_FILES"
+echo -e "\nBelow files were updated in the last 24 hours" > $LOG_DIRECTORY/log_report.txt
+echo -e "\n" >> $LOG_DIRECTORY/log_report.txt
+echo "$LOG_FILES" >> $LOG_DIRECTORY/log_report.txt
 
-echo -e "\n=====================Analysing Application.log file====================="
-echo -e "\n"
+echo -e "\n***********************Starting Logs Analysis***********************" >> $LOG_DIRECTORY/log_report.txt
+echo -e "\n" >> $LOG_DIRECTORY/log_report.txt
 
-grep ${ERROR_PATTERNS[0]} $LOG_DIRECTORY/$APP_LOG
+for LOGS in $LOG_FILES; do #Using loops to analyse all the logs files present in the directory
 
-echo -e "\nNumber of logs of ${ERROR_PATTERNS[0]} type is: " $(grep -c ${ERROR_PATTERNS[0]} $LOG_DIRECTORY/$APP_LOG) #Command Substituion
+    for ERRORS in ${ERROR_PATTERNS[@]}; do #Using loops to iterate through the ERROR_PATTERNS present in the logs
 
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
+        echo -e "\n===================Analysing $LOGS file===================" >> $LOG_DIRECTORY/log_report.txt
+        echo -e "\n" >> $LOG_DIRECTORY/log_report.txt
+ 
+        grep $ERRORS $LOGS >> $LOG_DIRECTORY/log_report.txt >> $LOG_DIRECTORY/log_report.txt
 
-grep ${ERROR_PATTERNS[1]} $LOG_DIRECTORY/$APP_LOG
+        ERROR_COUNT=$(grep -c $ERRORS $LOGS)
+        
+        echo -e "\nNumber of logs of $ERRORS type is: " $ERROR_COUNT  >> $LOG_DIRECTORY/log_report.txt #Command Substituion
 
-echo -e "\nNumber of logs of ${ERROR_PATTERNS[1]} type is: " $(grep -c ${ERROR_PATTERNS[1]} $LOG_DIRECTORY/$APP_LOG) #Command Substituion
+        echo -e "\n---------------------------------------------------------------" >> $LOG_DIRECTORY/log_report.txt
+        echo -e "\n" >> $LOG_DIRECTORY/log_report.txt
 
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
+        if [ $ERROR_COUNT  -gt 5 ]; then 
 
-grep ${ERROR_PATTERNS[2]} $LOG_DIRECTORY/$APP_LOG
+            echo "⚠️ Attention - Too many logs of type $ERRORS occured in $LOGS. Please check here: $LOG_DIRECTORY/log_report.txt" 
+            echo -e "\n"
 
-echo -e "\nNumber of logs of ${ERROR_PATTERNS[2]} type is: " $(grep -c ${ERROR_PATTERNS[2]} $LOG_DIRECTORY/$APP_LOG) #Command Substituion
+        fi
 
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
 
-grep ${ERROR_PATTERNS[3]} $LOG_DIRECTORY/$APP_LOG
+    done
 
-echo -e "\nNumber of logs of ${ERROR_PATTERNS[3]} type is: " $(grep -c ${ERROR_PATTERNS[3]} $LOG_DIRECTORY/$APP_LOG) #Command Substituion
+done 
 
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
-
-grep ${ERROR_PATTERNS[4]} $LOG_DIRECTORY/$APP_LOG
-
-echo -e "\nNumber of logs of ${ERROR_PATTERNS[4]} type is: " $(grep -c ${ERROR_PATTERNS[4]} $LOG_DIRECTORY/$APP_LOG) #Command Substituion
-
-echo -e "\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-
-echo -e "\n=====================Analysing System.log file====================="
-echo -e "\n"
-
-grep ${ERROR_PATTERNS[0]} $LOG_DIRECTORY/$SYS_LOG
-
-echo -e "\nNumber of logs of ${ERROR_PATTERNS[0]} type is: " $(grep -c ${ERROR_PATTERNS[0]} $LOG_DIRECTORY/$SYS_LOG) #Command Substituion
-
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
-
-grep ${ERROR_PATTERNS[1]} $LOG_DIRECTORY/$SYS_LOG
-
-echo -e "\nNumber of logs of ${ERROR_PATTERNS[1]} type is: " $(grep -c ${ERROR_PATTERNS[1]} $LOG_DIRECTORY/$SYS_LOG) #Command Substituion
-
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
-
-grep ${ERROR_PATTERNS[2]} $LOG_DIRECTORY/$SYS_LOG
-
-echo -e "\nNumber of logs of ${ERROR_PATTERNS[2]} type is: " $(grep -c ${ERROR_PATTERNS[2]} $LOG_DIRECTORY/$SYS_LOG) #Command Substituion
-
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
-
-grep ${ERROR_PATTERNS[3]} $LOG_DIRECTORY/$SYS_LOG
-
-echo -e "\nNumber of logs of ${ERROR_PATTERNS[3]} type is: " $(grep -c ${ERROR_PATTERNS[3]} $LOG_DIRECTORY/$SYS_LOG) #Command Substituion
-
-echo -e "\n---------------------------------------------------------------"
-echo -e "\n"
-
-grep ${ERROR_PATTERNS[4]} $LOG_DIRECTORY/$SYS_LOG
-
-echo -e "\nNumber of logs of ${ERROR_PATTERNS[4]} type is: " $(grep -c ${ERROR_PATTERNS[4]} $LOG_DIRECTORY/$SYS_LOG) #Command Substituion
-
-echo -e "\nANALYSIS COMPLETED!"
+echo -e "\nANALYSIS COMPLETED - The output is saved at $LOG_DIRECTORY/log_report.txt"
