@@ -1,5 +1,8 @@
 #/bin/bash
 
+echo -e "\n****************ARITHMETIC OPERATORS****************"
+
+
 read -r -p "Enter the first number: " a
 read -r -p "Enter the second number: " b
 
@@ -45,3 +48,71 @@ echo -e "\n"
 ((--b))
 echo "Decrement operator when applied on 'b' results into b :" "${b}"
 echo -e "\n"
+
+echo -e "\n****************RELATIONAL OPERATORS****************"
+echo -e "\n"
+
+read -r -p "Enter the first number a: " a
+read -r -p "Enter the second number b: " b
+
+echo -e "\n----------------------------------------------------------------"
+
+if (($a==$b)); then
+    echo -e "\na is equal to b."
+
+else
+    echo -e "\na is not equal to b."
+
+fi
+
+echo -e "\n----------------------------------------------------------------"
+
+if (($a!=$b)); then
+    echo -e "\na is not equal to b."
+
+else
+    echo -e "\na is equal to b."
+
+fi
+
+echo -e "\n----------------------------------------------------------------"
+
+if (($a<$b)); then
+    echo -e "\na is less than b."
+
+else
+    echo -e "\na is not less than b."
+
+fi
+
+echo -e "\n----------------------------------------------------------------"
+
+if (($a<=$b)); then
+    echo -e "\na is less or equal to b."
+
+else
+    echo -e "\na is not less than or equal to b."
+
+fi
+
+echo -e "\n----------------------------------------------------------------"
+
+if (($a>$b)); then
+    echo -e "\na is greater then b."
+
+else
+    echo -e "\na is not greater than b."
+
+fi
+
+echo -e "\n----------------------------------------------------------------"
+
+if (($a>=$b)); then
+    echo -e "\na is greater then or equal to b."
+
+else
+    echo -e "\na is not greater than or equal to b."
+
+fi
+
+echo -e "\n----------------------------------------------------------------"
